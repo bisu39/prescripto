@@ -1,0 +1,53 @@
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Frontend build output
+dist/
+dist-ssr/
+
+# Logs and runtime files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.pid
+*.seed
+*.pid.lock
+
+# Test and coverage output
+coverage/
+.nyc_output/
+
+# Local tooling and editor files
+.vscode/
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Local deployment and hosting state
+.vercel/
+.netlify/
+.render/
+
+# Project-local recording/temporary artifact
+videoStamp.txt
