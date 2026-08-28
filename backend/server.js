@@ -12,6 +12,10 @@ const port = process.env.PORT || 4000;
 connectDB();
 connectCloudinary();
 const app = express();
+// home route
+app.get('/', (req, res) => {
+    res.send('Server is running');
+});
 
 // middlewares
 
