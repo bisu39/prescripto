@@ -95,9 +95,7 @@ const Appointment = () => {
   }
   useEffect(() => { getAvailableSlots() }, [docInfo])
   useEffect(() => { fetchDocInfo() }, [doctors, docId])
-  useEffect(() => {
-    console.log(docSlots);
-  }, [docSlots])
+
   return docInfo && (
     <div>
       {/* --- Doctor details --- */}
