@@ -7,7 +7,6 @@ import { v2 as cloudinary } from 'cloudinary'
 import doctorModel from '../models/doctorModel.js'
 import appointmentModel from '../models/appointmentModel.js'
 import razorpay from 'razorpay'
-import { use } from 'react'
 
 dotenv.config()
 // function to register user
