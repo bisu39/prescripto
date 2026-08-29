@@ -17,8 +17,8 @@ See the application-specific guides for details:
 - [Backend README](backend/README.md)
 ## Live view
 Go experience it...
-User Frontend view link:- https://myprescriptoapp.netlify.app
-Admin Panel view link:- https://adminprescriptoapp.netlify.app
+- User Frontend view link:- https://myprescriptoapp.netlify.app
+- Admin Panel view link:- https://adminprescriptoapp.netlify.app
 ## Technology stack
 
 - React and Vite for the patient and admin applications
