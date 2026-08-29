@@ -1,6 +1,6 @@
 import express from 'express'
 const userRouter = express.Router()
-import { loginUser, registerUser, getProfile, updateProfile, bookAppointment, listAppointment, calcelAppointment, paymentRazorpay, verifyRazorpay } from '../controllers/userController.js'
+import { loginUser, registerUser, getProfile, updateProfile, bookAppointment, listAppointment, calcelAppointment, paymentRazorpay, verifyRazorpay, resetPassword } from '../controllers/userController.js'
 import authUser from '../middlewares/authUser.js'
 import upload from '../middlewares/multer.js'
 
@@ -10,6 +10,9 @@ userRouter.post('/register', registerUser)
 // endpoint: /api/user/login
 // access : public
 userRouter.post('/login', loginUser)
+// endpoint: /api/user/reset-password
+// access : public
+userRouter.post('/reset-password',resetPassword)
 // endpoint: /api/user/get-profile
 // access : private
 userRouter.get('/get-profile', authUser, getProfile)

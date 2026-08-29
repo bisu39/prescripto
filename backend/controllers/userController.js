@@ -7,8 +7,10 @@ import { v2 as cloudinary } from 'cloudinary'
 import doctorModel from '../models/doctorModel.js'
 import appointmentModel from '../models/appointmentModel.js'
 import razorpay from 'razorpay'
+import { use } from 'react'
 
 dotenv.config()
+// function to register user
 const registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body
@@ -61,7 +63,35 @@ const loginUser = async (req, res) => {
         res.json({ success: false, message: error.message })
     }
 }
+// function to reset password
+const resetPassword = async (req, res) => {
+    try {
+        const { email, password } = req.body
+        const user = await userModel.findOne({ email })
+        if (!user) {
+            return res.json({ success: false, message: "user does not exists" })
+        }
+        if (password.length < 8) {
+            return res.json({ success: false, message: 'Choose a strong password' })
+        } else {
+            // password hashing
+            const salt = await bcrypt.genSalt(10)
+            const hashedPassword = await bcrypt.hash(password, salt)
+            // comparing password
+            const isMatch = await bcrypt.compare(password, user.password)
+            if (isMatch) {
+                return res.json({ success: false, message: "this password is used before try new one" })
+            }
+            user.password = hashedPassword;
+            user.save()
+            return res.json({ success: true, message: 'Password reseted successfully. Login with new password now' })
+        }
 
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
 // function to get user profile data
 const getProfile = async (req, res) => {
     try {
@@ -216,12 +246,12 @@ const verifyRazorpay = async (req, res) => {
     try {
         const { razorpay_order_id } = req.body
         const oderInfo = await razorpayInstance.orders.fetch(razorpay_order_id)
-        if(oderInfo.status === 'paid'){
-            await appointmentModel.findByIdAndUpdate(oderInfo.receipt,{payment:true})
-            res.json({success:true,message:'Payment successful'})
+        if (oderInfo.status === 'paid') {
+            await appointmentModel.findByIdAndUpdate(oderInfo.receipt, { payment: true })
+            res.json({ success: true, message: 'Payment successful' })
         }
-        else{
-            res.json({success:false,message:'Payment failed'})
+        else {
+            res.json({ success: false, message: 'Payment failed' })
         }
     } catch (error) {
         console.log(error)
@@ -229,4 +259,4 @@ const verifyRazorpay = async (req, res) => {
     }
 }
 
-export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, calcelAppointment, paymentRazorpay,verifyRazorpay }
+export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, calcelAppointment, paymentRazorpay, verifyRazorpay, resetPassword }
