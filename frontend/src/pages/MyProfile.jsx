@@ -33,17 +33,21 @@ const MyProfile = () => {
 
     }
   }
+  const avatarSrc =
+        userData?.image?.startsWith("data:image")
+            ? userData.image
+            : `data:image/png;base64,${userData?.image || ""}`;
   return userData && (
     <div className='max-w-lg flex flex-col gap-2 text-sm'>
       {
         isEdit ? <label htmlFor="image">
           <div className='inline-block relative cursor-pointer'>
-            <img className='w-36 rounded opacity-75' src={image ? URL.createObjectURL(image) : userData.image} alt="" />
-            <img className='w-10 absolute bottom-12 right-12' src={image ? null : assets.upload_icon} alt="" />
+            <img className='w-36 rounded opacity-75' src={image ? URL.createObjectURL(image) : avatarSrc} alt="" />
+            <img className='w-10 absolute bottom-12 right-[36%] bg-[rebeccapurple] rounded-full' src={image ? null : assets.upload_icon} alt="" />
           </div>
           <input onChange={(e) => setImage(e.target.files[0])} type="file" id='image' hidden />
         </label> :
-          <img className='w-36 rounded' src={userData.image} alt="" />
+          <img className='w-36 rounded' src={avatarSrc} alt="" />
       }
       {
         isEdit

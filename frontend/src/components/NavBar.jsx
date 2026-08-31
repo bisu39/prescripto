@@ -11,6 +11,10 @@ const NavBar = () => {
         localStorage.removeItem('token');
         navigate('/')
     }
+    const avatarSrc =
+        userData?.image?.startsWith("data:image")
+            ? userData.image
+            : `data:image/png;base64,${userData?.image || ""}`;
     return (
         <div className='flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400'>
             <img onClick={() => navigate('/')} className='w-44 cursor-pointer' src={assets.logo} alt="" />
@@ -36,7 +40,7 @@ const NavBar = () => {
                 {
                     token && userData
                         ? <div className='flex items-center gap-2 cursor-pointer group relative'>
-                            <img src={userData.image} className='w-8 rounded-full' alt="" />
+                            <img src={avatarSrc || assets.user_icon} className='w-8 h-8 rounded-full' alt="" />
                             <img src={assets.dropdown_icon} className='w-2.5 group-hover:rotate-180 transition-transform duration-300 ease-in' alt="" />
                             <div className='short-cl'>
                                 <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>

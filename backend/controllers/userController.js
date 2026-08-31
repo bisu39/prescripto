@@ -83,7 +83,7 @@ const resetPassword = async (req, res) => {
             }
             user.password = hashedPassword;
             user.save()
-            return res.json({ success: true, message: 'Password reseted successfully. Login with new password now' })
+            return res.json({ success: true, message: 'Password reseted' })
         }
 
     } catch (error) {

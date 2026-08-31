@@ -11,10 +11,46 @@ const Login = () => {
   const [name, setName] = useState('');
   const [resetPassword, setResetPassword] = useState(false)
   const { token, setToken, backendUrl } = useContext(AppContext)
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const validate = () => {
+    const newErrors = {}
+
+    if (state === 'Sing Up') {
+      if (!name) {
+        newErrors.name = 'Name is required';
+      } else if (name.length < 4) {
+        newErrors.name = 'Name must contain at least 4 characters';
+      }
+    }
+    if (!email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = 'Enter a valid email';
+    }
+
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else if (password.length < 8) {
+      newErrors.password = 'Password must contain at least 8 characters';
+    } else if (!/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).+$/.test(password)) {
+      newErrors.password = 'Password must contain at least one uppercase letter, one special character, and one number';
+    }
+
+    return newErrors;
+  }
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+
+
     try {
+      
+      const validationErrors = validate();
+
+      if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        return;
+      }
       if (state === "Sing Up") {
         const { data } = await axios.post(backendUrl + '/api/user/register', { name, email, password })
         if (data.success) {
@@ -27,11 +63,12 @@ const Login = () => {
       }
       if (state === 'Login' && resetPassword) {
         const { data } = await axios.post(backendUrl + '/api/user/reset-password', { email, password })
-        if(data.success){
+        if (data.success) {
           toast.success(data.message)
           setEmail('')
           setPassword('')
-        }else{
+          setResetPassword(false)
+        } else {
           toast.error(data.message)
         }
       }
@@ -65,18 +102,23 @@ const Login = () => {
             <div className='w-full'>
               <p>Full Name</p>
               <input className='border border-zinc-300 rounded w-full p-2 mt-1' type="text" name="" id="" onChange={(e) => setName(e.target.value)} value={name} required />
+              {errors.name && <p className='text-[10px] text-red-400 font-bold mt-2'>{errors.name}</p>}
             </div>
           }
           <div className='w-full'>
             <p>Email</p>
             <input className='border border-zinc-300 rounded w-full p-2 mt-1' type="email" name="" id="" onChange={(e) => setEmail(e.target.value)} value={email} required />
+            {errors.email && <p className='text-[10px] text-red-400 font-bold mt-2'>{errors.email}</p>}
+
           </div>
           <div className='w-full'>
             <p>{resetPassword && state === "Login" ? 'New password' : 'Password'} </p>
             <input className='border border-zinc-300 rounded w-full p-2 mt-1' type="password" name="" id="" onChange={(e) => setPassword(e.target.value)} value={password} required />
             {state === "Login" && resetPassword || state === "Sing Up" ?
-              '' : <p className='text-primary text-xs mt-2 font-bold' onClick={() => setResetPassword(!resetPassword)}>Reset password</p>
+              '' : <p className='text-orange-400 text-xs mt-2 font-bold' onClick={() => setResetPassword(!resetPassword)}>Reset password</p>
             }
+            {errors.password && <p className='text-[10px] text-red-400 font-bold mt-2' >{errors.password}</p>}
+
           </div>
           <button type='submit' className='bg-primary text-white w-full py-2 rounded-md text-base'>{state === 'Sing Up' ? 'Create Account' : state === "Login" && resetPassword ? 'Reset Password' : 'Log in'}</button>
           {
