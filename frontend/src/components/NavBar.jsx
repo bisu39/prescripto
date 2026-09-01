@@ -13,8 +13,7 @@ const NavBar = () => {
     }
     const avatarSrc =
         userData?.image?.startsWith("data:image")
-            ? userData.image
-            : `data:image/png;base64,${userData?.image || ""}`;
+            ?`data:image/png;base64,${userData?.image || ""}`: userData.image;
     return (
         <div className='flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400'>
             <img onClick={() => navigate('/')} className='w-44 cursor-pointer' src={assets.logo} alt="" />
