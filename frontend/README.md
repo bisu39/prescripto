@@ -1,13 +1,32 @@
 # Prescripto Frontend
 
-The patient-facing web application for Prescripto. Patients can browse doctors, create an account, manage their profile, book appointments, and make payments through Razorpay.
+The patient-facing application for Prescripto allows users to explore doctors, sign up or log in, update their profile, book appointments, and pay using Razorpay.
 
-## Prerequisites
+## Features
 
-- Node.js 18 or newer
-- The Prescripto backend running locally or a deployed backend URL
+- Responsive landing page and doctor catalog
+- Specialty-based doctor filtering
+- Detailed doctor profile section
+- User signup and login flows
+- Patient profile update with avatar support
+- Appointment booking and booking status tracking
+- Appointment cancellation
+- Razorpay payment integration
+- My appointments dashboard
+- Mobile-friendly navigation
+- Form validation 
+- Password reset
 
-## Installation
+## Tech stack
+
+- React
+- Vite
+- React Router
+- Axios
+- React Toastify
+- Tailwind CSS
+
+## Setup
 
 From this directory:
 
@@ -21,39 +40,51 @@ Create a `.env` file in `frontend/`:
 VITE_BACKEND_URL=http://localhost:4000
 ```
 
-The value must point to the backend origin only. Do not add `/api` because the application adds the API paths itself.
+Use only the backend origin, not the full `/api` path.
 
 ## Available commands
 
 ```bash
-npm run dev       # Start the Vite development server
-npm run build     # Create a production build
-npm run preview   # Preview the production build locally
-npm run lint      # Run ESLint
+npm run dev
+npm run build
+npm run preview
+npm run lint
 ```
 
-The development server is normally available at `http://localhost:5173`.
+The app usually runs at:
 
-## Main features
+```text
+http://localhost:5173
+```
 
-- Doctor directory and specialty filtering
-- Doctor profile and appointment booking
-- User registration and login
-- Profile and profile-image updates
-- Appointment history and cancellation
-- Razorpay payment flow
+## Main routes
+
+- `/` — Home page
+- `/doctors` — Doctors directory
+- `/doctors/:speciality` — Filtered specialist list
+- `/login` — User login/signup
+- `/about` — About page
+- `/contact` — Contact page
+- `/my-profile` — User profile screen
+- `/my-appointments` — User appointment history
+- `/appointment/:docId` — Booking page
 
 ## Project structure
 
 ```text
 src/
-	assets/       Images and icons
-	components/   Shared UI components
-	context/      Application state and backend access
-	pages/        Route-level screens
-	App.jsx       Application routes
+├── assets/
+├── components/
+├── context/
+├── pages/
+├── App.jsx
+├── main.jsx
+├── index.css
+└── ...
 ```
 
-## Backend dependency
+## Notes
 
-The frontend expects the backend API at `VITE_BACKEND_URL`. Start the backend from `backend/` before using login, doctor data, appointments, or payments. See the backend README for database and service configuration.
+- Start the backend before using login, booking, or payment features.
+- If the default Vite port is busy, Vite will automatically select another port.
+- For image upload support, ensure the backend has valid Cloudinary credentials.

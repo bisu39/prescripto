@@ -1,15 +1,31 @@
 # Prescripto Backend
 
-The REST API for Prescripto. This service provides authentication, doctor management, appointments, profile updates, image uploads, and Razorpay payment verification for the patient frontend and admin panel.
+This backend powers the Prescripto ecosystem. It provides authentication, doctor and appointment management, profile handling, file uploads, and Razorpay payment flows for the patient app and admin/doctor portal.
 
-## Prerequisites
+## Features
 
-- Node.js 18 or newer
-- MongoDB or a MongoDB Atlas cluster
-- A Cloudinary account for doctor and user profile images
-- Razorpay credentials if payment features are enabled
+- User registration and login
+- Doctor listing and filtering
+- Appointment booking and cancellation
+- Admin login and dashboard APIs
+- Doctor dashboard and appointment management
+- Cloudinary image upload for user/doctor images
+- JWT-based authentication for all roles
+- Razorpay payment integration and verification
+- Mongoose models for users, doctors, appointments, and admin data
 
-## Installation
+## Tech stack
+
+- Node.js
+- Express
+- MongoDB + Mongoose
+- JWT
+- Cloudinary
+- Razorpay
+- Validator
+- Bcrypt
+
+## Setup
 
 From this directory:
 
@@ -17,7 +33,7 @@ From this directory:
 npm install
 ```
 
-Create a `.env` file in `backend/` with the following values:
+Create a `.env` file in `backend/`:
 
 ```env
 PORT=4000
@@ -38,84 +54,75 @@ RAZORPAY_KEY_SECRET=<razorpay-key-secret>
 CURRENCY=USD
 ```
 
-`MONGO_URI` should contain the MongoDB server address without the `/prescripto` database suffix because the application appends that database name. Keep `.env` private and never commit real credentials.
-
-Razorpay variables are only needed for payment endpoints. The application creates the Razorpay client when both `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` are present.
-
 ## Run the API
 
 ```bash
 npm start
 ```
 
-The start script runs `nodemon server.js`. If `nodemon` is not installed globally, run the server with `npx nodemon server.js` or install it as a development dependency.
+The server runs on:
 
-The API listens on `http://localhost:4000` by default. Set `PORT` to use another port.
+```text
+http://localhost:4000
+```
 
-## API routes
-
-All routes are prefixed with `/api`.
+## Main route groups
 
 ### User routes
-
-- `POST /api/user/register` - Register a patient
-- `POST /api/user/login` - Patient login
-- `GET /api/user/get-profile` - Get the authenticated patient's profile
-- `POST /api/user/update-profile` - Update profile data and image
-- `POST /api/user/book-appointment` - Book an appointment
-- `GET /api/user/appointments` - List the patient's appointments
-- `POST /api/user/cancel-appointment` - Cancel an appointment
-- `POST /api/user/payment-razorpay` - Create a Razorpay payment
-- `POST /api/user/verifyRazorpay` - Verify a Razorpay payment
+- `POST /api/user/register`
+- `POST /api/user/login`
+- `GET /api/user/get-profile`
+- `POST /api/user/update-profile`
+- `POST /api/user/book-appointment`
+- `GET /api/user/appointments`
+- `POST /api/user/cancel-appointment`
+- `POST /api/user/payment-razorpay`
+- `POST /api/user/verifyRazorpay`
 
 ### Doctor routes
-
-- `GET /api/doctor/list` - List available doctors
-- `POST /api/doctor/login` - Doctor login
-- `GET /api/doctor/appointments` - List the doctor's appointments
-- `POST /api/doctor/complete-appointment` - Complete an appointment
-- `POST /api/doctor/cancel-appointment` - Cancel an appointment
-- `GET /api/doctor/dashboard` - Get doctor dashboard data
-- `GET /api/doctor/profile` - Get the doctor's profile
-- `POST /api/doctor/update-profile` - Update the doctor's profile
+- `GET /api/doctor/list`
+- `POST /api/doctor/login`
+- `GET /api/doctor/appointments`
+- `POST /api/doctor/complete-appointment`
+- `POST /api/doctor/cancel-appointment`
+- `GET /api/doctor/dashboard`
+- `GET /api/doctor/profile`
+- `POST /api/doctor/update-profile`
 
 ### Admin routes
+- `POST /api/admin/login`
+- `POST /api/admin/add-doctor`
+- `POST /api/admin/all-doctors`
+- `POST /api/admin/change-availability`
+- `GET /api/admin/appointments`
+- `POST /api/admin/appointmentCanel`
+- `GET /api/admin/dashboard`
 
-- `POST /api/admin/login` - Admin login
-- `POST /api/admin/add-doctor` - Add a doctor with an image
-- `POST /api/admin/all-doctors` - List all doctors
-- `POST /api/admin/change-availability` - Change doctor availability
-- `GET /api/admin/appointments` - List all appointments
-- `POST /api/admin/appointmentCanel` - Cancel an appointment
-- `GET /api/admin/dashboard` - Get admin dashboard data
+## Authentication
 
-Protected routes require the token header used by the corresponding client: `token` for patients, `dtoken` for doctors, and `aToken` for administrators. Image update and doctor creation requests use `multipart/form-data`.
+Protected APIs use different token headers depending on the role:
+
+- User: `token`
+- Doctor: `dtoken`
+- Admin: `aToken`
 
 ## Project structure
 
 ```text
-config/       MongoDB and Cloudinary connections
-controllers/  Request handlers and business logic
-middlewares/  Authentication and file-upload middleware
-models/       Mongoose data models
-routes/       API route definitions
-server.js     Express application entry point
+backend/
+├── config/
+├── controllers/
+├── middlewares/
+├── models/
+├── routes/
+├── server.js
+├── package.json
+├── .env
+└── README.md
 ```
 
-## Connected applications
+## Notes
 
-Set the following variable in both Vite applications:
-
-```env
-VITE_BACKEND_URL=http://localhost:4000
-```
-
-Start the backend before starting `frontend/` or `admin/`. The backend enables CORS for the connected browser applications.
-
-## Troubleshooting
-
-- MongoDB connection errors: verify `MONGO_URI`, network access, and database credentials.
-- Authentication errors: verify all JWT secrets and the matching client token header.
-- Image upload errors: verify the three Cloudinary variables.
-- Payment errors: verify both Razorpay credentials and the `CURRENCY` value.
-- Port errors: change `PORT` and update `VITE_BACKEND_URL` in both frontend applications.
+- `MONGO_URI` should not include the database name suffix because the app adds `/prescripto` during connection.
+- Cloudinary and Razorpay credentials are required for upload and payment features.
+- The frontend and admin apps should point to the same backend origin via `VITE_BACKEND_URL`.

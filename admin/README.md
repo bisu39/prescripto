@@ -1,13 +1,37 @@
 # Prescripto Admin Panel
 
-The administration and doctor portal for Prescripto. Administrators can manage doctors and appointments, while doctors can manage their availability, appointments, and profiles.
+This portal powers the admin and doctor workflows of Prescripto. It allows administrators to manage doctors and appointments, and doctors to handle patient visit scheduling, completion, and updates.
 
-## Prerequisites
+## Features
 
-- Node.js 18 or newer
-- The Prescripto backend running locally or a deployed backend URL
+### Admin features
+- Admin login
+- Add doctor profiles with image upload
+- View all doctors
+- Toggle doctor availability
+- View all appointments
+- Cancel appointments
+- Dashboard summary with recent activity
 
-## Installation
+### Doctor features
+- Doctor login
+- View doctor dashboard
+- View assigned appointments
+- Mark appointments as complete
+- Cancel appointments
+- Update profile and fees
+- Toggle availability status
+
+## Tech stack
+
+- React
+- Vite
+- React Router
+- Axios
+- Tailwind CSS
+- Context API for state management
+
+## Setup
 
 From this directory:
 
@@ -21,40 +45,52 @@ Create a `.env` file in `admin/`:
 VITE_BACKEND_URL=http://localhost:4000
 ```
 
-The value must point to the backend origin only. Do not add `/api` because the application adds the API paths itself.
-
 ## Available commands
 
 ```bash
-npm run dev       # Start the Vite development server
-npm run build     # Create a production build
-npm run preview   # Preview the production build locally
-npm run lint      # Run ESLint
+npm run dev
+npm run build
+npm run preview
+npm run lint
 ```
 
-The development server is normally available at `http://localhost:5173`. If the patient frontend is already using that port, Vite will select the next available port.
+The app usually runs on:
 
-## Access and features
+```text
+http://localhost:5173
+```
 
-- Admin login uses `ADMIN_EMAIL` and `ADMIN_PASSWORD` configured in the backend.
-- Doctor login uses doctor credentials created through the admin panel.
-- Admin dashboard, doctor management, availability updates, and appointment management
-- Doctor dashboard, appointment completion or cancellation, and profile updates
+If the patient frontend already uses that port, Vite will choose the next available one.
 
-Authentication tokens are stored in browser local storage. Use the logout control or clear site storage when switching accounts.
+## Routes
+
+### Admin routes
+- `/admin-dashboard` — Overview dashboard
+- `/all-appointments` — All appointment records
+- `/add-doctor` — Add a new doctor
+- `/doctor-list` — Manage available doctors
+
+### Doctor routes
+- `/doctor-dashboard` — Doctor overview
+- `/doctor-appointments` — Appointment management
+- `/doctor-profile` — Update profile and fees
 
 ## Project structure
 
 ```text
 src/
-	assets/       Images and icons
-	components/   Navbar and sidebar components
-	context/      Admin, doctor, and shared backend state
-	pages/Admin/  Administrator screens
-	pages/Doctor/ Doctor screens
-	pages/        Login screen
+├── assets/
+├── components/
+├── context/
+├── pages/
+├── App.jsx
+├── main.jsx
+├── index.css
+└── ...
 ```
 
-## Backend dependency
+## Notes
 
-The panel expects the backend API at `VITE_BACKEND_URL`. Start the backend from `backend/` before signing in or loading dashboard data. See the backend README for required environment variables.
+- Admin credentials are configured in the backend `.env` file using `ADMIN_EMAIL` and `ADMIN_PASSWORD`.
+- The backend must be running before the app can load data or authenticate users.
+- Authentication tokens are saved in browser local storage.
