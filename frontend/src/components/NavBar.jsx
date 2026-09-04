@@ -5,6 +5,7 @@ import { AppContext } from '../context/AppContext.jsx';
 const NavBar = () => {
     const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false);
+    const[showMobileProfileMenu,setShowMobileProfileMenu] = useState(false);
     const {token, setToken,userData} = useContext(AppContext);
     const logoutHandler = () => {
         setToken(false);
@@ -38,10 +39,10 @@ const NavBar = () => {
             <div className='flex items-center gap-4'>
                 {
                     token && userData
-                        ? <div className='flex items-center gap-2 cursor-pointer group relative'>
+                        ? <div className='flex items-center gap-2 cursor-pointer group relative' onClick={()=>setShowMobileProfileMenu(!showMobileProfileMenu)}>
                             <img src={avatarSrc || assets.user_icon} className='w-8 h-8 rounded-full' alt="" />
-                            <img src={assets.dropdown_icon} className='w-2.5 group-hover:rotate-180 transition-transform duration-300 ease-in' alt="" />
-                            <div className='short-cl'>
+                            <img src={assets.dropdown_icon} className={`w-2.5 group-hover:rotate-180 ${showMobileProfileMenu?'rotate-180':''} transition-transform duration-300 ease-in`} alt="" />
+                            <div className={`${showMobileProfileMenu?'mob-profile-opt':'short-cl'} `}>
                                 <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
                                     <p onClick={() => navigate("my-profile")} className='hover:text-black cursor-pointer'>My Profile</p>
                                     <p onClick={() => navigate("my-appointments")} className='hover:text-black cursor-pointer'>My Appointments</p>
@@ -49,11 +50,11 @@ const NavBar = () => {
                                 </div>
                             </div>
                         </div> :
-                        <button onClick={() => navigate('/login')} className='bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block'>Log In</button>
+                        <button onClick={() => navigate('/login')} className='bg-primary text-white md:px-8 md:py-3 rounded-full font-light text-xm md:text-sm px-3 py-2'>Log In</button>
                 }
-                <img onClick={() => setShowMenu(true)} className='sm:hidden' src={assets.menu_icon} alt="" />
+                <img onClick={() => setShowMenu(true)} className='md:hidden' src={assets.menu_icon} alt="" />
                 {/* ---mobile menu--- */}
-                <div className={`${showMenu ? 'fixed w-full' : 'h-0 w-0'} md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all`}>
+                <div className={`${showMenu ? 'fixed w-full' : 'h-0 w-0'} md:hidden absolute right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all`}>
                     <div className='flex items-center justify-between px-5 py-6'>
                         <img className='w-36' src={assets.logo} alt="" />
                         <img className='w-7' onClick={() => setShowMenu(false)} src={assets.cross_icon} alt="" />

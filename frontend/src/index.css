@@ -17,9 +17,11 @@
 }
 
 .short-cl {
-    @apply absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block
+    @apply absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block ;
 }
-
+.mob-profile-opt{
+    @apply block absolute top-0 right-[-50%] pt-14 text-base font-medium text-gray-600 z-20;
+}
 ::-webkit-scrollbar {
     @apply hidden
 }
